@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
@@ -64,11 +65,16 @@ public class AdminUserController {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
-                .filterOutAllExcept("id", "name", "joinDate", "ssn");
+        // User -> User2
+        UserV2 userV2 = new UserV2();
+        BeanUtils.copyProperties(user, userV2);
+        userV2.setGrade("VIP");
 
-        MappingJacksonValue mappingValue = new MappingJacksonValue(user);
-        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("id", "name", "joinDate", "grade");
+
+        MappingJacksonValue mappingValue = new MappingJacksonValue(userV2);
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfoV2", filter);
         mappingValue.setFilters(filters);
 
         return mappingValue;
