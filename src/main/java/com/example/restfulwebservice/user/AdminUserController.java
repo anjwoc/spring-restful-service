@@ -24,6 +24,7 @@ public class AdminUserController {
         this.service = service;
     }
 
+    // test
     @GetMapping("/users")
     public MappingJacksonValue retrieveAllUsers() {
         List<User> users = service.findAll();
