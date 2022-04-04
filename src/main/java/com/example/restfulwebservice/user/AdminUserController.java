@@ -29,15 +29,15 @@ public class AdminUserController {
     public MappingJacksonValue retrieveAllUsers() {
         List<User> users = service.findAll();
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
-                .filterOutAllExcept("id", "name", "joinDate", "ssn");
+    SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+            .filterOutAllExcept("id", "name", "joinDate", "ssn");
 
-        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
-        MappingJacksonValue mappingValue = new MappingJacksonValue(users);
+    FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
+    MappingJacksonValue mappingValue = new MappingJacksonValue(users);
         mappingValue.setFilters(filters);
 
         return mappingValue;
-    }
+}
 
     // GET /admin/users/1 - /admin/v1/users/1
 //    @GetMapping(value = "/v1/users/{id}")
